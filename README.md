@@ -72,7 +72,7 @@ Le projet sera composé de plusieurs fichiers notamment des fichiers essentiels 
 ```
 /var/www/vyn
 │── app/
-│   │── \_\_init\_\_.py
+│   │── __init__.py
 │   │── db.py
 │   │── schema.sql
 │   │── app.py
