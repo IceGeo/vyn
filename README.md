@@ -85,10 +85,10 @@ Le projet sera composé de plusieurs fichiers notamment des fichiers essentiels 
 │── tests/
 │   │── conftest.py
 │   │── data.sql
-│   │── test\_factory.py
-│   │── test\_db.py
-│   │── test\_auth.py
-│   └── test\_blog.py
+│   │── test_factory.py
+│   │── test_db.py
+│   │── test_auth.py
+│   └── test_blog.py
 │── venv/
 │── setup.py
 └── MANIFEST.in
