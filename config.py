@@ -1,0 +1,1 @@
+SECRET_KEY = 'W\\pt3S!a64QTK[JQga@-|0c-.0'
