@@ -1,34 +1,28 @@
-from flask import Flask, json, render_template
-from scapy.layers.inet import traceroute
+from flask import Flask, render_template, send_from_directory, request
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='')
 app.config.from_object("config")
 
 
 @app.route('/')
 def index():
-    return "Hello world !"
+    return render_template('home.html')
 
 
+@app.route('/managment/')
+def managment():
+    return render_template('managment.html')
 
 
-    # Run trace route.
-    result, _ = traceroute([domain], dport=[80,443], maxttl=20, retry=-2)
+@app.route('/admin/')
+def admin():
+    return render_template('admin.html')
 
-    # Convert to a dot graph.
-    dot = result.graph(string=True)
 
-    # Project simple details of the routes taken.
-    routes = [(tcp.dst, ip.sprintf("%dst%:%sport%")) for tcp, ip in result]
+@app.route('/robots.txt')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
 
-    # Cache and return the result.
-    result = json.dumps({
-        "graph": dot,
-        "routes": routes
-    })
-
-    cached_trace_routes[domain] = result
-    return result
 
 if __name__ == "__main__":
     app.run()
