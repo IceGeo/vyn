@@ -4,7 +4,6 @@ from scapy.layers.inet import traceroute
 app = Flask(__name__)
 app.config.from_object("config")
 
-cached_trace_routes = {}
 
 @app.route('/')
 def index():
@@ -12,10 +11,6 @@ def index():
 
 
 
-@app.route('/monitoring/<domain>')
-def monitor(domain):
-    if domain in cached_trace_routes:
-            return cached_trace_routes[domain]
 
     # Run trace route.
     result, _ = traceroute([domain], dport=[80,443], maxttl=20, retry=-2)
