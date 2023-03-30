@@ -1,40 +1,33 @@
-from flask import Flask
-from scapy.all import ARP, Ether, srp
-
-app = Flask(__name__)
+from flask import Flask, render_template, send_from_directory, request
+from vyn.discovers import scan
+app = Flask(__name__, static_folder='static', static_url_path='')
 app.config.from_object("config")
+
 
 @app.route('/')
 def index():
-    return "Hello world !"
+    return render_template('home.html')
 
-@app.route('/monitoring/')
-def monitor():
-    target_ip = "192.168.1.1/24"
-    # IP Address for the destination
-    # create ARP packet
-    arp = ARP(pdst=target_ip)
-    # create the Ether broadcast packet
-    # ff:ff:ff:ff:ff:ff MAC address indicates broadcasting
-    ether = Ether(dst="ff:ff:ff:ff:ff:ff")
-    # stack them
-    packet = ether/arp
 
-    result = srp(packet, timeout=3, verbose=0)[0]
+@app.route('/managment/', methods=['GET', 'POST'])
+def managment():
+    if request.method == 'POST':
+        ip = request.form.get('adresse_ip')
+        iface = request.form.get('interface_reseau')
+        scanner = scan(ip, iface)
+        scanner.arp()      
+    return render_template('managment.html')
 
-    # a list of clients, we will fill this in the upcoming loop
-    clients = []
 
-    for sent, received in result:
-        # for each response, append ip and mac address to `clients` list
-        clients.append({'ip': received.psrc, 'mac': received.hwsrc})
+@app.route('/admin/')
+def admin():
+    return render_template('admin.html')
 
-    # print clients
-    print("Available devices in the network:")
-    print("IP" + " "*18+"MAC")
-    for client in clients:
-        print("{:16}    {}".format(client['ip'], client['mac']))
-    return "Hi there"
+
+@app.route('/robots.txt')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
+
 
 if __name__ == "__main__":
     app.run()

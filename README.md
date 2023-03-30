@@ -106,10 +106,11 @@ Page Racine :
 - Simple page d'authentification.
 
 Page Monitoring  :
-- En fonction de ce qui est réalisable, nous souhaitons pouvoir visualiser le nombre de connexions, la charge du réseau, la charge des différents équipements du réseau, la consommation de bande passante… sous forme de graphique Grafana
+- En fonction de ce qui est réalisable, nous souhaitons pouvoir visualiser le nombre de connexions, identifier des champs dans des fichiers de logs pour en extraire des graphiques.
 
 Page Administration :
 - La page d’administration permettrait de gérer différents équipements en ssh.
+- Découverte automatique de l’infrastructure du réseau.
 
 ## <a id="3_3">3.3. Fonctionnalités secondaires</a>
 
@@ -120,7 +121,6 @@ Page Gestion de fichier :
 Page Schéma :
 
 - Visualisation en schéma de l’infrastructure du réseau / services.
-- Découverte automatique de l’infrastructure du réseau.
 
 # <a id="4">4. Sources</a>
 Flask :
