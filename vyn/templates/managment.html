@@ -1,4 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
-
+    <div class="container">
+        <h1>Découverte du réseau</h1>
+        <form method="post" action="/managment/">
+            <div class="form-group">
+                <label for="adresse_ip">Adresse/Plage IP :</label>
+                <input type="text" class="form-control" id="adresse_ip" name="adresse_ip">
+            </div>
+            <div class="form-group">
+                <label for="interface_reseau">Interface réseau :</label>
+                <select class="form-control" id="interface_reseau" name="interface_reseau">
+                    <option value="eth0">eth0</option>
+                    <option value="eth1">eth1</option>
+                    <option value="wlan0">virbr0</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+        </form>
+    </div>
 {% endblock %}
