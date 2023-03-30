@@ -1,32 +1,36 @@
-#!/usr/bin/python3
-import scapy.all as scapy
-import argparse
+from scapy.layers.inet import Ether
+from scapy.layers.l2 import ARP, srp
+# import argparse
 import socket
 import time
 import napalm
 
 
-class Discorver:
+class scan:
     ip = ""
     iface = ""
     answered = list()
     unanswered = list()
-
-    def get_args(self):
-        parser = argparse.ArgumentParser()
-        parser.add_argument("-n", "--network", dest="network",
-                            help="Specify the network you want to reach")
-        parser.add_argument("-i", "--iface", dest="iface",
-                            help="Specify the output interface")
-        options = parser.parse_args()
-        self.ip = options.network
-        self.iface = options.iface
+    # ################# Ancienne méthode ##################
+    # def get_args(self):
+    #    parser = argparse.ArgumentParser()
+    #    parser.add_argument("-n", "--network", dest="network",
+    #                        help="Specify the network you want to reach")
+    #    parser.add_argument("-i", "--iface", dest="iface",
+    #                        help="Specify the output interface")
+    #    options = parser.parse_args()
+    #    self.ip = options.network
+    #    self.iface = options.iface
+  
+    def __init__(self, ip, iface):
+        self.ip = ip
+        self.iface = iface
 
     def arp(self):
-        arp_req = scapy.Arp(pdst=self.ip)
-        brd = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
+        arp_req = ARP(pdst=self.ip)
+        brd = Ether(dst="ff:ff:ff:ff:ff:ff")
         arp_req_brd = brd/arp_req
-        self.answered, self.unanswered = scapy.srp(
+        self.answered, self.unanswered = srp(
             arp_req_brd, timeout=1, iface=self.iface)
         for host in self.answered:
             ip, mac = host[1].psrc, host[1].hwsrc
@@ -58,9 +62,3 @@ class Discorver:
         device.open()
         print(device.get_interfaces_ip())
         device.close()
-
-
-scan = Discorver()
-scan.get_args()
-scan.arp()
-scan.port()
